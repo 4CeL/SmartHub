@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Music } from "lucide-react";
+import { Music, Search } from "lucide-react";
 
 // ======================================================
 // N8N WEBHOOK URL
@@ -42,6 +42,7 @@ export default function SongChordsPage() {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState(false);
+  const [emailSearch, setEmailSearch] = useState("");
 
   // ======================================================
   // ADD SONG STATE
@@ -1107,19 +1108,19 @@ export default function SongChordsPage() {
       {showEmailModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
 
-          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
 
             {/* HEADER */}
 
-            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
+            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5 dark:border-neutral-800">
 
               <div>
 
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Kirim Chord ke Email
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   Pilih lagu yang ingin dikirim melalui email.
                 </p>
 
@@ -1139,11 +1140,12 @@ export default function SongChordsPage() {
                   setSelectedSongs(
                     []
                   );
+                  setEmailSearch("");
                 }}
                 disabled={
                   sendingEmail
                 }
-                className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-800 dark:hover:text-gray-300"
               >
 
                 <svg
@@ -1166,7 +1168,7 @@ export default function SongChordsPage() {
 
             {/* SELECT ALL */}
 
-            <div className="border-b border-gray-100 px-6 py-4">
+            <div className="border-b border-gray-100 px-6 py-4 dark:border-neutral-800">
 
               <label className="flex cursor-pointer items-center gap-3">
 
@@ -1197,7 +1199,7 @@ export default function SongChordsPage() {
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
 
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                   Pilih Semua
                 </span>
 
@@ -1212,17 +1214,31 @@ export default function SongChordsPage() {
 
             </div>
 
+            {/* SEARCH */}
+            <div className="border-b border-gray-100 px-6 py-3 dark:border-neutral-800">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={emailSearch}
+                  onChange={(e) => setEmailSearch(e.target.value)}
+                  placeholder="Cari lagu..."
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-4 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
+                />
+              </div>
+            </div>
+
             {/* SONG LIST */}
 
             <div className="max-h-80 overflow-y-auto px-6 py-3">
 
-              {songs.length ===
+              {songs.filter((song) => song.judulLagu.toLowerCase().includes(emailSearch.toLowerCase())).length ===
               0 ? (
                 <div className="py-8 text-center text-sm text-gray-500">
                   Tidak ada lagu.
                 </div>
               ) : (
-                songs.map(
+                songs.filter((song) => song.judulLagu.toLowerCase().includes(emailSearch.toLowerCase())).map(
                   (song) => {
 
                     const isSelected =
@@ -1244,10 +1260,10 @@ export default function SongChordsPage() {
                         }
                         className={`mb-2 flex items-center gap-3 rounded-xl border p-4 transition ${
                           !hasChord
-                            ? "cursor-not-allowed border-gray-100 bg-gray-50 opacity-60"
+                            ? "cursor-not-allowed border-gray-100 bg-gray-50 opacity-60 dark:border-neutral-800 dark:bg-neutral-800/50"
                             : isSelected
-                            ? "cursor-pointer border-blue-200 bg-blue-50"
-                            : "cursor-pointer border-gray-200 bg-white hover:bg-gray-50"
+                            ? "cursor-pointer border-blue-200 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-900/20"
+                            : "cursor-pointer border-gray-200 bg-white hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800"
                         }`}
                       >
 
@@ -1270,7 +1286,7 @@ export default function SongChordsPage() {
 
                         <div className="min-w-0 flex-1">
 
-                          <p className="truncate text-sm font-medium text-gray-900">
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
                             {
                               song.judulLagu
                             }
@@ -1300,7 +1316,7 @@ export default function SongChordsPage() {
 
             {/* FOOTER */}
 
-            <div className="flex gap-3 border-t border-gray-100 px-6 py-5">
+            <div className="flex gap-3 border-t border-gray-100 px-6 py-5 dark:border-neutral-800">
 
               <button
                 type="button"
@@ -1311,11 +1327,12 @@ export default function SongChordsPage() {
                   setSelectedSongs(
                     []
                   );
+                  setEmailSearch("");
                 }}
                 disabled={
                   sendingEmail
                 }
-                className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-800"
               >
                 Batal
               </button>
