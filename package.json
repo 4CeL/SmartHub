@@ -1,0 +1,63 @@
+{
+  "name": "livestream-scheduler",
+  "version": "0.1.0",
+  "main": "electron/main.js",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "electron": "electron .",
+    "dist": "npm run build && electron-builder"
+  },
+  "build": {
+    "appId": "com.smarthub.app",
+    "productName": "SmartHub",
+
+    "directories": {
+      "output": "dist"
+    },
+
+    "files": [
+      "electron/**/*",
+      ".next/**/*",
+      "public/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "out",
+        "to": "app/out"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "dependencies": {
+    "lucide-react": "^1.31.0",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "concurrently": "^10.0.5",
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.0",
+    "tailwindcss": "^4",
+    "wait-on": "^9.1.0"
+  }
+}
