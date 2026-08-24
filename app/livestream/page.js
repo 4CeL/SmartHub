@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Video } from "lucide-react";
 
 export default function Home() {
   const [thumbnailDesignId, setThumbnailDesignId] = useState("");
@@ -343,17 +344,27 @@ export default function Home() {
         )}
     <div className="mx-auto max-w-6xl">
 
-        {/* Header */}
-        <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-            Sunday Service Livestream Scheduler
-        </h1>
+        {/* ==================================================
+            HEADER
+        ================================================== */}
+        
+        <section className="mb-8">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900">
+              <Video className="h-5 w-5 text-white" />
+            </div>
 
-        <p className="mt-2 text-gray-600">
-            Atur Livestream YouTube dan Video
-            News Gereja.
-        </p>
-        </div>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                Sunday Service Livestream Scheduler
+              </h1>
+
+              <p className="mt-1 text-sm text-gray-500">
+                Atur Livestream YouTube dan Video News Gereja.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Main Card */}
         <div className="rounded-xl bg-white p-6 shadow-sm">

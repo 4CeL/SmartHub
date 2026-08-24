@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Music } from "lucide-react";
 
 // ======================================================
 // N8N WEBHOOK URL
@@ -543,17 +544,22 @@ export default function SongChordsPage() {
             HEADER
         ================================================== */}
 
-        <div className="mb-8 flex items-end justify-between gap-4">
+        <div className="mb-8 flex items-center justify-between gap-4">
 
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Song Chords
-            </h1>
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900">
+              <Music className="h-5 w-5 text-white" />
+            </div>
 
-            <p className="mt-2 text-sm text-gray-500">
-              Daftar lagu dan link chord untuk
-              kebutuhan pelayanan.
-            </p>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                Song Chords
+              </h1>
+
+              <p className="mt-1 text-sm text-gray-500">
+                Daftar lagu dan link chord untuk kebutuhan pelayanan.
+              </p>
+            </div>
           </div>
 
           {/* BUTTONS */}

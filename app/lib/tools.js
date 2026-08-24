@@ -4,6 +4,7 @@ import {
   Wrench,
   Zap,
   NotebookPen,
+  BookOpen,
 } from "lucide-react";
 
 export const tools = [
@@ -45,6 +46,16 @@ export const tools = [
     category: "Utilities",
     icon: Wrench,
     available: false,
+  },
+
+  {
+    name: "Materi Remaja",
+    description:
+      "Generate materi persekutuan remaja berdasarkan referensi ayat Alkitab.",
+    href: "/materi-persekutuan-remaja",
+    category: "Tools",
+    icon: BookOpen,
+    available: true,
   },
 
   {
