@@ -211,7 +211,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-100 px-6 py-10">
+    <main className="min-h-screen bg-gray-100 px-6 py-10 dark:bg-neutral-950 transition-colors">
     {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
         <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-2xl">
@@ -222,12 +222,12 @@ export default function Home() {
             </div>
 
             {/* Title */}
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             Generating Livestream
             </h2>
 
             {/* Description */}
-            <p className="mt-3 text-sm leading-6 text-gray-500">
+            <p className="mt-3 text-sm leading-6 text-gray-500 dark:text-gray-400">
             Sedang membuat jadwal livestream dan memproses video.
             <br />
             Mohon tunggu, proses ini mungkin membutuhkan beberapa saat.
@@ -247,11 +247,11 @@ export default function Home() {
             </div>
 
             {/* Status */}
-            <div className="mt-6 rounded-lg bg-gray-50 px-4 py-3">
-            <p className="text-xs font-medium text-gray-500">
+            <div className="mt-6 rounded-lg bg-gray-50 px-4 py-3 dark:bg-neutral-800">
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
                 PROCESSING
             </p>
-            <p className="mt-1 text-sm text-gray-700">
+            <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
                 Please don't close this page
             </p>
             </div>
@@ -262,7 +262,7 @@ export default function Home() {
 
     {success && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
-            <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-2xl">
+            <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-2xl dark:bg-neutral-900">
 
             {/* Success Icon */}
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-50">
@@ -283,19 +283,19 @@ export default function Home() {
             </div>
 
             {/* Title */}
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Successfully Generated
             </h2>
 
             {/* Description */}
-            <p className="mt-3 text-sm leading-6 text-gray-500">
+            <p className="mt-3 text-sm leading-6 text-gray-500 dark:text-gray-400">
                 Livestream berhasil dibuat dan video telah
                 berhasil di-upload ke Google Drive.
             </p>
 
             {/* Success Status */}
-            <div className="mt-6 rounded-lg border border-green-100 bg-green-50 px-4 py-3">
-                <p className="text-sm font-medium text-green-700">
+            <div className="mt-6 rounded-lg border border-green-100 bg-green-50 px-4 py-3 dark:border-green-900/50 dark:bg-green-900/10">
+                <p className="text-sm font-medium text-green-700 dark:text-green-400">
                 ✓ Workflow completed successfully
                 </p>
             </div>
@@ -334,7 +334,7 @@ export default function Home() {
                 setSuccess(false);
                 setMessage("");
                 }}
-                className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 active:scale-[0.98]"
+                className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 active:scale-[0.98] dark:border-neutral-700 dark:bg-neutral-800 dark:text-gray-300 dark:hover:bg-neutral-700"
             >
                 Done
             </button>
@@ -350,16 +350,16 @@ export default function Home() {
         
         <section className="mb-8">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900">
-              <Video className="h-5 w-5 text-white" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
+              <Video className="h-5 w-5 text-white dark:text-gray-900" />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Sunday Service Livestream Scheduler
               </h1>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Atur Livestream YouTube dan Video News Gereja.
               </p>
             </div>
@@ -367,48 +367,34 @@ export default function Home() {
         </section>
 
         {/* Main Card */}
-        <div className="rounded-xl bg-white p-6 shadow-sm">
+        <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-neutral-900 transition-colors">
 
-        {/* Thumbnail Design ID */}
-        <div className="mb-8">
-            <label className="mb-2 block text-sm font-semibold text-gray-700">
+        {/* Thumbnail Design */}
+        <div className="mb-8 border-b border-gray-100 pb-8 dark:border-neutral-800">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
             Canva Thumbnail Design ID
-            </label>
+            </h2>
 
             <input
             type="text"
+            id="thumbnailDesign"
             value={thumbnailDesignId}
-            onChange={(e) =>
-                setThumbnailDesignId(e.target.value)
-            }
-            placeholder="Contoh: DAHLz51TewM"
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            onChange={(e) => setThumbnailDesignId(e.target.value)}
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800"
+            placeholder="Contoh: DAGrB_09meI"
             />
-
-            <p className="mt-2 text-xs text-gray-500">
-            Design ID Canva yang berisi beberapa page thumbnail.
-            </p>
         </div>
 
-        {/* Livestream */}
-        <div>
-
-            {/* Header */}
-            <div className="mb-4 flex items-center justify-between">
-            <div>
-                <h2 className="text-lg font-semibold text-gray-900">
+        {/* Livestreams List */}
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
                 Daftar Livestream
-                </h2>
-
-                <p className="text-sm text-gray-500">
-                Tambahkan livestream yang ingin dijadwalkan.
-                </p>
-            </div>
-
+            </h2>
             <button
                 type="button"
                 onClick={addLivestream}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                className="flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-100 active:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
             >
                 + Tambah Livestream
             </button>
@@ -420,22 +406,23 @@ export default function Home() {
             {livestreams.map((item, index) => (
                 <div
                 key={index}
-                className="rounded-xl border border-gray-200 bg-gray-50 p-5"
+                className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900"
                 >
-
-                {/* Card Header */}
-                <div className="mb-5 flex items-center justify-between">
-
-                    <h3 className="font-semibold text-gray-800">
-                    Livestream Minggu {index + 1}
+                <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-neutral-800">
+                <div className="flex items-center gap-3">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-900/50 dark:text-blue-400">
+                    {index + 1}
+                    </span>
+                    <h3 className="font-medium text-gray-800 dark:text-white">
+                    Livestream {index + 1}
                     </h3>
-
-                    {livestreams.length > 1 && (
+                </div>
+                {livestreams.length > 1 && (
                     <button
-                        type="button"
-                        onClick={() => removeLivestream(index)}
-                        title="Hapus livestream"
-                        className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 hover:text-red-700"
+                    type="button"
+                    onClick={() => removeLivestream(index)}
+                    className="rounded-lg p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
+                    title="Hapus Livestream"
                     >
                         <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -455,39 +442,29 @@ export default function Home() {
                         </svg>
                     </button>
                     )}
-
                 </div>
 
-                <div className="grid gap-5 md:grid-cols-2">
+                <div className="grid gap-5 p-5 md:grid-cols-2">
 
                     {/* Thumbnail Page */}
                     <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Thumbnail Page
-                    </label>
-
-                    <input
-                        type="number"
-                        min={1}
-                        value={item.page}
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                        Judul Livestream
+                        </label>
+                        <input
+                        type="text"
+                        value={item.judulLive}
                         onChange={(e) =>
-                        updateLivestream(
-                            index,
-                            "page",
-                            Number(e.target.value)
-                        )
+                            updateLivestream(index, "judulLive", e.target.value)
                         }
-                        className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    />
-
-                    <p className="mt-2 text-xs text-gray-500">
-                        Nomor page thumbnail pada Canva.
-                    </p>
+                        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800"
+                        placeholder="Contoh: Ibadah Minggu Raya..."
+                        />
                     </div>
 
                     {/* Video Design ID */}
                     <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                         Canva ID For News
                     </label>
 
@@ -501,7 +478,7 @@ export default function Home() {
                             e.target.value
                             )
                         }
-                        className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-3 pr-10 text-sm text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-black outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800"
                         >
                         <option value="">
                             Pilih Video Design ID
@@ -517,11 +494,10 @@ export default function Home() {
                         ))}
                         </select>
 
-                        {/* Custom arrow */}
                         <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 text-gray-700"
+                            className="h-4 w-4 text-gray-400"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                         >
@@ -533,17 +509,13 @@ export default function Home() {
                         </svg>
                         </div>
                     </div>
-
-                    <p className="mt-2 text-xs text-gray-500">
-                        Design ID Canva untuk video minggu ini.
-                    </p>
                     </div>
 
                 </div>
 
                 {/* Judul */}
-                <div className="mt-5">
-                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                <div className="px-5 pb-5">
+                    <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                     Livestream Date
                     </label>
 
@@ -565,20 +537,16 @@ export default function Home() {
                         generateJudulLive(tanggal)
                         );
                     }}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-black outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800"
                     />
 
-                    <p className="mt-2 text-xs text-gray-500">
-                    Pilih tanggal livestream.
-                    </p>
-
                     {item.judulLive && (
-                    <div className="mt-3 rounded-lg bg-gray-50 py-3">
-                        <p className="text-xs font-medium text-gray-500">
+                    <div className="mt-3 rounded-lg bg-gray-50 px-4 py-3 dark:bg-neutral-800">
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
                         Judul Livestream
                         </p>
 
-                        <p className="mt-1 text-sm font-medium text-gray-900">
+                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">
                         {item.judulLive}
                         </p>
                     </div>

@@ -66,13 +66,13 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-gray-200 bg-white">
+    <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 transition-colors">
 
       {/* ======================================================
           LOGO
       ====================================================== */}
 
-      <div className="border-b border-gray-100 px-5 py-5">
+      <div className="border-b border-gray-100 px-5 py-5 dark:border-neutral-800">
 
         <Link
           href="/"
@@ -91,11 +91,11 @@ export default function Sidebar() {
 
           <div className="min-w-0">
 
-            <h1 className="text-lg font-bold tracking-tight text-gray-900">
-              Smart<span className="text-blue-600">Hub</span>
+            <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+              Smart<span className="text-blue-600 dark:text-blue-500">Hub</span>
             </h1>
 
-            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">
               Everyday Tools
             </p>
 
@@ -126,7 +126,7 @@ export default function Sidebar() {
 
               {/* CATEGORY TITLE */}
 
-              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-gray-400">
+              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
                 {group.title}
               </p>
 
@@ -146,8 +146,8 @@ export default function Sidebar() {
                       href={item.href}
                       className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                         active
-                          ? "bg-gray-900 text-white shadow-sm"
-                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                          ? "bg-gray-900 text-white shadow-sm dark:bg-white dark:text-gray-900"
+                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-neutral-800 dark:hover:text-white"
                       }`}
                     >
 
@@ -156,8 +156,8 @@ export default function Sidebar() {
                       <Icon
                         className={`h-[18px] w-[18px] shrink-0 ${
                           active
-                            ? "text-white"
-                            : "text-gray-400 group-hover:text-gray-700"
+                            ? "text-white dark:text-gray-900"
+                            : "text-gray-400 group-hover:text-gray-700 dark:group-hover:text-white"
                         }`}
                         strokeWidth={2}
                       />
@@ -193,7 +193,7 @@ export default function Sidebar() {
           BOTTOM
       ====================================================== */}
 
-      <div className="border-t border-gray-100 p-4">
+      <div className="border-t border-gray-100 p-4 dark:border-neutral-800">
 
         {/* SETTINGS */}
 
@@ -201,8 +201,8 @@ export default function Sidebar() {
           href="/settings"
           className={`mb-3 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
             isActive("/settings")
-              ? "bg-gray-900 text-white"
-              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+              ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-neutral-800 dark:hover:text-white"
           }`}
         >
 
@@ -217,15 +217,15 @@ export default function Sidebar() {
 
         {/* VERSION CARD */}
 
-        <div className="rounded-xl border border-gray-100 bg-gray-50 px-3 py-3">
+        <div className="rounded-xl border border-gray-100 bg-gray-50 px-3 py-3 dark:border-neutral-800 dark:bg-neutral-900">
 
           <div className="flex items-center justify-between">
 
-            <p className="text-xs font-semibold text-gray-700">
+            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">
               SmartHub
             </p>
 
-            <span className="rounded-md bg-white px-2 py-1 text-[9px] font-medium text-gray-400 shadow-sm">
+            <span className="rounded-md bg-white px-2 py-1 text-[9px] font-medium text-gray-400 shadow-sm dark:bg-neutral-800 dark:text-gray-500">
               v1.0
             </span>
 

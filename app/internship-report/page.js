@@ -404,56 +404,39 @@ export default function InternshipReportPage() {
   // ======================================================
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-8">
-
+    <main className="min-h-screen bg-gray-50 px-6 py-8 dark:bg-neutral-950 transition-colors">
       <div className="mx-auto max-w-6xl">
-
         {/* ==================================================
             HEADER
         ================================================== */}
-
         <section className="mb-8">
-
           <div className="flex items-center gap-3">
-
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900">
-
-              <FileText className="h-5 w-5 text-white" />
-
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
+              <FileText className="h-5 w-5 text-white dark:text-gray-900" />
             </div>
-
             <div>
-
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Monthly Internship Report
               </h1>
-
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Buat laporan kegiatan magang bulanan
                 menggunakan bantuan AI.
               </p>
-
             </div>
-
           </div>
-
         </section>
 
         {/* ==================================================
             TAB
         ================================================== */}
-
-        <div className="mb-6 flex gap-2 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm">
-
+        <div className="mb-6 flex gap-2 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
           <button
             type="button"
-            onClick={() =>
-              setActiveTab("input")
-            }
+            onClick={() => setActiveTab("input")}
             className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
               activeTab === "input"
-                ? "bg-gray-900 text-white"
-                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-neutral-800 dark:hover:text-white"
             }`}
           >
 
@@ -466,35 +449,26 @@ export default function InternshipReportPage() {
           <button
             type="button"
             disabled={!reportPdfUrl}
-            onClick={() =>
-              setActiveTab("preview")
-            }
+            onClick={() => setActiveTab("preview")}
             className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
               activeTab === "preview"
-                ? "bg-gray-900 text-white"
-                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-40"
+                ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-40 dark:text-gray-400 dark:hover:bg-neutral-800 dark:hover:text-white"
             }`}
           >
-
             <FileText className="h-4 w-4" />
-
             Preview Laporan
-
           </button>
-
         </div>
 
         {/* ==================================================
             ERROR
         ================================================== */}
-
         {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4">
-
-            <p className="text-sm font-medium text-red-700">
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 dark:border-red-900/50 dark:bg-red-900/10">
+            <p className="text-sm font-medium text-red-700 dark:text-red-400">
               {error}
             </p>
-
           </div>
         )}
 
@@ -504,47 +478,36 @@ export default function InternshipReportPage() {
 
         {activeTab === "input" && (
           <>
-
-            {/* ==================================================
+{/* ==================================================
                 REPORT INFORMATION
             ================================================== */}
 
-            <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-
+            <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-colors">
               <div className="mb-6">
-
                 <div className="flex items-center gap-2">
-
-                  <CalendarDays className="h-5 w-5 text-gray-700" />
-
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Informasi Laporan
+                  <CalendarDays className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Periode Laporan
                   </h2>
-
                 </div>
-
-                <p className="mt-1 text-sm text-gray-500">
-                  Tentukan periode laporan magang.
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Pilih bulan dan tahun untuk laporan ini.
                 </p>
-
               </div>
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
                 {/* MONTH */}
 
-                <div>
+                <div className="relative">
 
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Bulan
                   </label>
-
                   <select
                     value={month}
-                    onChange={(e) =>
-                      setMonth(e.target.value)
-                    }
-                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    onChange={(e) => setMonth(e.target.value)}
+                    className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 pr-10 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
                   >
 
                     <option value="">
@@ -600,178 +563,148 @@ export default function InternshipReportPage() {
                     </option>
 
                   </select>
-
+                  <div className="pointer-events-none absolute inset-y-0 right-4 flex top-7 items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 text-gray-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
                 </div>
 
-                {/* YEAR */}
-
-                <div>
-
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                {/* TAHUN */}
+                <div className="flex-1">
+                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Tahun
                   </label>
-
                   <input
-                    type="number"
+                    type="text"
                     value={year}
-                    onChange={(e) =>
-                      setYear(e.target.value)
-                    }
-                    placeholder="Contoh: 2026"
-                    min="2000"
-                    max="2100"
-                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    onChange={(e) => setYear(e.target.value)}
+                    placeholder="Contoh: 2024"
+                    maxLength={4}
+                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
                   />
-
                 </div>
-
               </div>
-
             </section>
 
             {/* ==================================================
                 WEEKLY ACTIVITIES
             ================================================== */}
 
-            <section className="mt-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-
-              <div className="mb-6">
-
+            <section className="mt-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-colors">
+              <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-
-                  <Clock3 className="h-5 w-5 text-gray-700" />
-
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Kegiatan Mingguan
+                  <Clock3 className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Detail Mingguan
                   </h2>
-
                 </div>
-
-                <p className="mt-1 text-sm text-gray-500">
-                  Masukkan kegiatan dan kendala pada setiap minggu.
-                </p>
-
               </div>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Masukkan kegiatan dan kendala pada setiap minggu.
+              </p>
 
               {/* WEEKS */}
 
-              <div className="space-y-5">
+              <div className="space-y-5 mt-6">
 
                 {weeks.map((week, index) => (
                   <section
-                    key={week.week}
-                    className="rounded-2xl border border-gray-200 bg-gray-50/60 p-5"
+                    key={index}
+                    className="relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-gray-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
                   >
-
                     {/* WEEK HEADER */}
-
-                    <div className="mb-5 flex items-center justify-between">
-
+                    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-4 dark:border-neutral-800 dark:bg-neutral-800/50">
                       <div className="flex items-center gap-3">
-
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900 text-xs font-bold text-white">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100 text-sm font-bold text-blue-700 dark:bg-blue-900/50 dark:text-blue-400">
                           {week.week}
-                        </div>
-
-                        <div>
-
-                          <h3 className="text-sm font-semibold text-gray-900">
-                            Minggu Ke-{week.week}
-                          </h3>
-
-                          <p className="text-xs text-gray-400">
-                            Kegiatan minggu ke-{week.week}
-                          </p>
-
-                        </div>
-
+                        </span>
+                        <h3 className="font-semibold text-gray-800 dark:text-white">
+                          Minggu {week.week}
+                        </h3>
                       </div>
-
+                      
                       {weeks.length > 1 && (
                         <button
                           type="button"
-                          onClick={() =>
-                            removeWeek(index)
-                          }
-                          className="rounded-lg p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500"
+                          onClick={() => removeWeek(index)}
+                          className="rounded-lg p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
+                          title="Hapus Minggu"
                         >
 
                           <Trash2 className="h-4 w-4" />
 
                         </button>
                       )}
-
                     </div>
 
-                    {/* INPUT GRID */}
+                    <div className="p-5">
+                      {/* INPUT GRID */}
+                      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                        {/* ACTIVITIES */}
+                        <div>
+                          <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Kegiatan
+                          </label>
 
-                      {/* ACTIVITIES */}
+                          <textarea
+                            value={week.activities}
+                            onChange={(e) =>
+                              updateWeek(
+                                index,
+                                "activities",
+                                e.target.value
+                              )
+                            }
+                            placeholder={`Contoh:\n- Membuat API untuk modul machine calibration\n- Melakukan integrasi backend dan frontend`}
+                            className="min-h-[190px] w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
+                          />
 
-                      <div>
+                          <p className="mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                            Masukkan seluruh kegiatan yang dilakukan pada minggu ini.
+                          </p>
+                        </div>
 
-                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                          Kegiatan
-                        </label>
+                        {/* ISSUES */}
+                        <div>
 
-                        <textarea
-                          value={week.activities}
-                          onChange={(e) =>
-                            updateWeek(
-                              index,
-                              "activities",
-                              e.target.value
-                            )
-                          }
-                          placeholder={`Contoh:
-- Membuat API untuk modul machine calibration
-- Melakukan testing menggunakan Postman
-- Memperbaiki query SQL
-- Melakukan integrasi backend dan frontend`}
-                          className="min-h-[190px] w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                        />
+                          <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Kendala & Solusi
+                            <span className="ml-1 font-normal text-gray-400 dark:text-gray-500">
+                              (opsional)
+                            </span>
+                          </label>
 
-                        <p className="mt-2 text-[11px] text-gray-400">
-                          Masukkan seluruh kegiatan yang dilakukan pada minggu ini.
-                        </p>
+                          <textarea
+                            value={week.issues}
+                            onChange={(e) =>
+                              updateWeek(
+                                index,
+                                "issues",
+                                e.target.value
+                              )
+                            }
+                            placeholder={`Contoh:\n- Mengalami error pada API saat melakukan request\n- Mengecek response menggunakan Postman\n- Memperbaiki parameter request yang salah`}
+                            className="min-h-[190px] w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
+                          />
 
-                      </div>
+                          <p className="mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                            Jika tidak ada kendala, bagian ini boleh dikosongkan.
+                          </p>
 
-                      {/* ISSUES */}
-
-                      <div>
-
-                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                          Kendala & Solusi
-                          <span className="ml-1 font-normal text-gray-400">
-                            (opsional)
-                          </span>
-                        </label>
-
-                        <textarea
-                          value={week.issues}
-                          onChange={(e) =>
-                            updateWeek(
-                              index,
-                              "issues",
-                              e.target.value
-                            )
-                          }
-                          placeholder={`Contoh:
-- Mengalami error pada API saat melakukan request
-- Mengecek response menggunakan Postman
-- Memperbaiki parameter request yang salah`}
-                          className="min-h-[190px] w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                        />
-
-                        <p className="mt-2 text-[11px] text-gray-400">
-                          Jika tidak ada kendala, bagian ini boleh dikosongkan.
-                        </p>
+                        </div>
 
                       </div>
-
-                    </div>
 
                     {/* POINT COUNT */}
 
@@ -806,7 +739,7 @@ export default function InternshipReportPage() {
                       </p>
 
                     </div>
-
+                    </div>
                   </section>
                 ))}
 
@@ -817,11 +750,10 @@ export default function InternshipReportPage() {
               <div className="mt-5">
 
                 {weeks.length < 5 ? (
-
                   <button
                     type="button"
                     onClick={addWeek}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-white px-5 py-4 text-sm font-medium text-gray-500 transition hover:border-blue-300 hover:bg-blue-50/30 hover:text-blue-600"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 bg-white px-5 py-4 text-sm font-medium text-gray-500 transition hover:border-blue-300 hover:bg-blue-50/30 hover:text-blue-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-gray-400 dark:hover:border-blue-700 dark:hover:bg-blue-900/20 dark:hover:text-blue-400"
                   >
 
                     <Plus className="h-4 w-4" />
@@ -832,15 +764,11 @@ export default function InternshipReportPage() {
                   </button>
 
                 ) : (
-
-                  <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-5 py-4 text-center">
-
-                    <p className="text-xs text-gray-400">
+                  <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-5 py-4 text-center dark:border-neutral-800 dark:bg-neutral-900/50">
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
                       Maksimal 5 minggu untuk satu laporan.
                     </p>
-
                   </div>
-
                 )}
 
               </div>
@@ -851,55 +779,40 @@ export default function InternshipReportPage() {
                 GENERATE
             ================================================== */}
 
-            <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm">
-
+            <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm dark:bg-white transition-colors">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
                 <div>
-
                   <div className="flex items-center gap-2">
-
-                    <Sparkles className="h-5 w-5 text-blue-400" />
-
-                    <h2 className="text-sm font-semibold text-white">
+                    <Sparkles className="h-5 w-5 text-blue-400 dark:text-blue-500" />
+                    <h2 className="text-sm font-semibold text-white dark:text-gray-900">
                       Siap membuat laporan?
                     </h2>
-
                   </div>
-
-                  <p className="mt-1 text-xs leading-5 text-gray-400">
+                  <p className="mt-1 text-xs leading-5 text-gray-400 dark:text-gray-500">
                     AI akan mengubah kegiatan mingguan
                     menjadi laporan naratif formal dan
                     PDF siap digunakan.
                   </p>
-
                 </div>
-
                 <button
                   type="button"
                   onClick={handleGenerateReport}
                   disabled={loading}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
                 >
-
                   {loading ? (
                     <>
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-900" />
-
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-900 dark:border-neutral-600 dark:border-t-white" />
                       Membuat Laporan...
                     </>
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4" />
-
                       Generate Report
                     </>
                   )}
-
                 </button>
-
               </div>
-
             </section>
 
           </>
@@ -917,86 +830,54 @@ export default function InternshipReportPage() {
                   PREVIEW TOOLBAR
               ================================================== */}
 
-              <section className="mb-5 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-
+              <section className="mb-5 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-colors">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                   <div className="flex items-center gap-3">
-
                     <button
                       type="button"
-                      onClick={() =>
-                        setActiveTab("input")
-                      }
-                      className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+                      onClick={() => setActiveTab("input")}
+                      className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-gray-300 dark:hover:bg-neutral-800"
                     >
-
                       <ArrowLeft className="h-4 w-4" />
-
                       Edit Input
-
                     </button>
-
-                    <div className="hidden h-6 w-px bg-gray-200 sm:block" />
-
+                    <div className="hidden h-6 w-px bg-gray-200 sm:block dark:bg-neutral-800" />
                     <div>
-
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
                         Preview Laporan
                       </p>
-
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-400 dark:text-gray-500">
                         {month} {year}
                       </p>
-
                     </div>
-
                   </div>
-
                   <div className="flex gap-2">
-
-                    {/* DOWNLOAD */}
-
                     <button
                       type="button"
-                      onClick={
-                        handleDownloadPdf
-                      }
-                      className="flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-gray-800"
+                      onClick={handleDownloadPdf}
+                      className="flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
                     >
-
                       <Download className="h-4 w-4" />
-
                       Download PDF
-
                     </button>
-
                   </div>
-
                 </div>
-
               </section>
 
               {/* ==================================================
                   PDF PREVIEW
               ================================================== */}
 
-              <section className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-200 shadow-sm">
-
+              <section className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-200 shadow-sm dark:border-neutral-800 dark:bg-neutral-800">
                 <div className="overflow-x-auto p-4 sm:p-8">
-
-                  <div className="mx-auto min-h-[900px] min-w-[900px] max-w-[1200px] overflow-hidden bg-white shadow-lg">
-
+                  <div className="mx-auto min-h-[900px] min-w-[900px] max-w-[1200px] overflow-hidden bg-white shadow-lg dark:bg-neutral-100">
                     <iframe
                       title="PDF Report Preview"
                       src={reportPdfUrl}
                       className="h-[1000px] w-full border-0"
                     />
-
                   </div>
-
                 </div>
-
               </section>
 
               {/* GENERATE ULANG */}
@@ -1006,7 +887,7 @@ export default function InternshipReportPage() {
                 <button
                   type="button"
                   onClick={resetReport}
-                  className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+                  className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-gray-300 dark:hover:bg-neutral-800"
                 >
 
                   <FileText className="h-4 w-4" />
@@ -1041,65 +922,47 @@ export default function InternshipReportPage() {
       {loading && (
 
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/60 px-4 backdrop-blur-sm">
-
-          <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-7 shadow-2xl">
-
+          <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-7 shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
             <div className="flex flex-col items-center text-center">
-
               {/* LOADING ICON */}
-
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50">
-
-                <span className="h-8 w-8 animate-spin rounded-full border-4 border-blue-100 border-t-blue-600" />
-
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-900/30">
+                <span className="h-8 w-8 animate-spin rounded-full border-4 border-blue-100 border-t-blue-600 dark:border-blue-900 dark:border-t-blue-500" />
               </div>
 
               {/* TITLE */}
-
-              <h2 className="mt-5 text-lg font-semibold text-gray-900">
+              <h2 className="mt-5 text-lg font-semibold text-gray-900 dark:text-white">
                 Sedang membuat laporan
               </h2>
 
               {/* DESCRIPTION */}
-
-              <p className="mt-2 text-sm leading-6 text-gray-500">
+              <p className="mt-2 text-sm leading-6 text-gray-500 dark:text-gray-400">
                 AI sedang menyusun kegiatan mingguan
                 menjadi laporan magang dan membuat
                 file PDF.
               </p>
 
               {/* PROCESS */}
-
-              <div className="mt-6 w-full rounded-xl bg-gray-50 px-4 py-4 text-left">
+              <div className="mt-6 w-full rounded-xl bg-gray-50 px-4 py-4 text-left dark:bg-neutral-800">
 
                 <div className="flex items-center gap-3">
-
                   <span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
-
-                  <span className="text-xs font-medium text-gray-600">
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
                     Mengolah kegiatan dan kendala...
                   </span>
-
                 </div>
 
                 <div className="mt-3 flex items-center gap-3">
-
                   <span className="h-2 w-2 animate-pulse rounded-full bg-blue-500 [animation-delay:200ms]" />
-
-                  <span className="text-xs font-medium text-gray-600">
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
                     Menyusun narasi laporan dengan AI...
                   </span>
-
                 </div>
 
                 <div className="mt-3 flex items-center gap-3">
-
                   <span className="h-2 w-2 animate-pulse rounded-full bg-blue-500 [animation-delay:400ms]" />
-
-                  <span className="text-xs font-medium text-gray-600">
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
                     Membuat file PDF...
                   </span>
-
                 </div>
 
                 <div className="mt-3 flex items-center gap-3">

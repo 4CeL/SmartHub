@@ -14,11 +14,9 @@
   "build": {
     "appId": "com.smarthub.app",
     "productName": "SmartHub",
-
     "directories": {
       "output": "dist"
     },
-
     "files": [
       "electron/**/*",
       ".next/**/*",
@@ -36,7 +34,6 @@
       "target": "nsis",
       "icon": "build/icon.ico"
     },
-
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
@@ -47,6 +44,7 @@
   "dependencies": {
     "lucide-react": "^1.31.0",
     "next": "16.3.0",
+    "next-themes": "^0.4.6",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },

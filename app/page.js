@@ -94,7 +94,7 @@ export default function Dashboard() {
   // ======================================================
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-8">
+    <main className="min-h-screen bg-gray-50 px-6 py-8 dark:bg-neutral-950 transition-colors">
       <div className="mx-auto max-w-6xl">
 
         {/* ==================================================
@@ -147,7 +147,7 @@ export default function Dashboard() {
 
           {/* TOTAL */}
 
-          <div className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md">
+          <div className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
 
             <div className="flex items-center justify-between">
 
@@ -163,7 +163,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="mt-5 text-3xl font-bold text-gray-900">
+            <p className="mt-5 text-3xl font-bold text-gray-900 dark:text-white">
               {totalTools}
             </p>
 
@@ -175,7 +175,7 @@ export default function Dashboard() {
 
           {/* ACTIVE */}
 
-          <div className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md">
+          <div className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
 
             <div className="flex items-center justify-between">
 
@@ -191,7 +191,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="mt-5 text-3xl font-bold text-gray-900">
+            <p className="mt-5 text-3xl font-bold text-gray-900 dark:text-white">
               {activeTools.length}
             </p>
 
@@ -203,7 +203,7 @@ export default function Dashboard() {
 
           {/* COMING SOON */}
 
-          <div className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md">
+          <div className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-gray-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
 
             <div className="flex items-center justify-between">
 
@@ -219,7 +219,7 @@ export default function Dashboard() {
 
             </div>
 
-            <p className="mt-5 text-3xl font-bold text-gray-900">
+            <p className="mt-5 text-3xl font-bold text-gray-900 dark:text-white">
               {comingSoonTools.length}
             </p>
 
@@ -235,7 +235,7 @@ export default function Dashboard() {
             TOOLS SECTION
         ================================================== */}
 
-        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-colors">
 
           {/* HEADER */}
 
@@ -245,9 +245,9 @@ export default function Dashboard() {
 
               <div className="flex items-center gap-2">
 
-                <FolderOpen className="h-5 w-5 text-gray-700" />
+                <FolderOpen className="h-5 w-5 text-gray-700 dark:text-gray-300" />
 
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Your Tools
                 </h2>
 
@@ -285,7 +285,7 @@ export default function Dashboard() {
                   setSearch(e.target.value)
                 }
                 placeholder="Cari tools..."
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800 dark:focus:ring-blue-900"
               />
 
             </div>
@@ -312,8 +312,8 @@ export default function Dashboard() {
                   }
                   className={`rounded-lg px-4 py-2 text-xs font-semibold transition ${
                     isActive
-                      ? "bg-gray-900 text-white shadow-sm"
-                      : "border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      ? "bg-gray-900 text-white shadow-sm dark:bg-blue-600 dark:text-white"
+                      : "border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-gray-300 dark:hover:bg-neutral-700 dark:hover:text-white"
                   }`}
                 >
                   {category}
@@ -339,14 +339,14 @@ export default function Dashboard() {
                   <Link
                     key={tool.href}
                     href={tool.href}
-                    className="group rounded-2xl border border-gray-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg"
+                    className="group rounded-2xl border border-gray-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-800/50 dark:hover:border-blue-500"
                   >
 
                     {/* ICON + STATUS */}
 
                     <div className="flex items-start justify-between">
 
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-600 transition group-hover:bg-blue-50 group-hover:text-blue-600">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-600 transition group-hover:bg-blue-50 group-hover:text-blue-600 dark:bg-neutral-700 dark:text-gray-300 dark:group-hover:bg-blue-900/30 dark:group-hover:text-blue-400">
 
                         <Icon className="h-5 w-5" />
 
@@ -372,7 +372,7 @@ export default function Dashboard() {
                         {tool.category}
                       </p>
 
-                      <h3 className="mt-1 text-base font-semibold text-gray-900">
+                      <h3 className="mt-1 text-base font-semibold text-gray-900 dark:text-white">
                         {tool.name}
                       </h3>
 
@@ -384,7 +384,7 @@ export default function Dashboard() {
 
                     {/* ACTION */}
 
-                    <div className="mt-5 flex items-center gap-2 text-xs font-semibold text-gray-600 transition group-hover:text-blue-600">
+                    <div className="mt-5 flex items-center gap-2 text-xs font-semibold text-gray-600 transition group-hover:text-blue-600 dark:text-gray-400 dark:group-hover:text-blue-400">
 
                       Buka Tool
 
@@ -448,7 +448,7 @@ export default function Dashboard() {
 
                 <Clock3 className="h-5 w-5 text-gray-500" />
 
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Coming Soon
                 </h2>
 
@@ -469,18 +469,18 @@ export default function Dashboard() {
                 return (
                   <div
                     key={tool.name}
-                    className="rounded-2xl border border-dashed border-gray-300 bg-gray-100/60 p-5"
+                    className="rounded-2xl border border-dashed border-gray-300 bg-gray-100/60 p-5 dark:border-neutral-700 dark:bg-neutral-800/30"
                   >
 
                     <div className="flex items-start justify-between">
 
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-200 text-gray-400">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-200 text-gray-400 dark:bg-neutral-700 dark:text-gray-500">
 
                         <Icon className="h-5 w-5" />
 
                       </div>
 
-                      <span className="rounded-full bg-gray-200 px-2.5 py-1 text-[10px] font-semibold text-gray-500">
+                      <span className="rounded-full bg-gray-200 px-2.5 py-1 text-[10px] font-semibold text-gray-500 dark:bg-neutral-700 dark:text-gray-400">
                         Coming Soon
                       </span>
 
@@ -492,7 +492,7 @@ export default function Dashboard() {
                         {tool.category}
                       </p>
 
-                      <h3 className="mt-1 text-base font-semibold text-gray-600">
+                      <h3 className="mt-1 text-base font-semibold text-gray-600 dark:text-gray-300">
                         {tool.name}
                       </h3>
 

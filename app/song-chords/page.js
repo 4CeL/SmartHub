@@ -537,7 +537,7 @@ export default function SongChordsPage() {
   // ======================================================
 
   return (
-    <main className="min-h-screen bg-gray-50 px-6 py-8">
+    <main className="min-h-screen bg-gray-50 px-6 py-8 dark:bg-neutral-950 transition-colors">
       <div className="mx-auto max-w-6xl">
 
         {/* ==================================================
@@ -547,16 +547,16 @@ export default function SongChordsPage() {
         <div className="mb-8 flex items-center justify-between gap-4">
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900">
-              <Music className="h-5 w-5 text-white" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
+              <Music className="h-5 w-5 text-white dark:text-gray-900" />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Song Chords
               </h1>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Daftar lagu dan link chord untuk kebutuhan pelayanan.
               </p>
             </div>
@@ -571,7 +571,7 @@ export default function SongChordsPage() {
             <button
               type="button"
               onClick={openEmailModal}
-              className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
             >
 
               <svg
@@ -603,7 +603,7 @@ export default function SongChordsPage() {
             <button
               type="button"
               onClick={openAddModal}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-700"
             >
 
               <svg
@@ -632,13 +632,13 @@ export default function SongChordsPage() {
             MAIN CARD
         ================================================== */}
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
 
           {/* SEARCH */}
 
           <div className="mb-6">
 
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Cari Lagu
             </label>
 
@@ -649,7 +649,7 @@ export default function SongChordsPage() {
                 setSearch(e.target.value)
               }
               placeholder="Cari judul lagu..."
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-blue-500"
             />
 
           </div>
@@ -661,9 +661,9 @@ export default function SongChordsPage() {
           {loading && (
             <div className="flex flex-col items-center justify-center py-16">
 
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600 dark:border-neutral-700 dark:border-t-blue-500" />
 
-              <p className="mt-4 text-sm text-gray-500">
+              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                 Memuat daftar lagu...
               </p>
 
@@ -675,9 +675,9 @@ export default function SongChordsPage() {
           ================================================== */}
 
           {!loading && error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900/50 dark:bg-red-900/10">
 
-              <p className="text-sm font-medium text-red-700">
+              <p className="text-sm font-medium text-red-700 dark:text-red-400">
                 {error}
               </p>
 
@@ -698,21 +698,21 @@ export default function SongChordsPage() {
 
           {!loading && !error && (
             <>
-              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
 
                 {/* TABLE HEADER */}
 
-                <div className="grid grid-cols-[60px_1fr_280px] items-center border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <div className="grid grid-cols-[60px_1fr_280px] items-center border-b border-gray-200 bg-gray-50 px-6 py-4 dark:border-neutral-800 dark:bg-neutral-800/50">
 
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                     No.
                   </p>
 
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                     Judul Lagu
                   </p>
 
-                  <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+                  <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                     Action
                   </p>
 
@@ -723,11 +723,11 @@ export default function SongChordsPage() {
                 {filteredSongs.length === 0 && (
                   <div className="px-6 py-16 text-center">
 
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
+                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800">
 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-gray-400"
+                        className="h-6 w-6 text-gray-400 dark:text-neutral-500"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -748,13 +748,13 @@ export default function SongChordsPage() {
 
                     </div>
 
-                    <p className="mt-4 text-sm font-medium text-gray-700">
+                    <p className="mt-4 text-sm font-medium text-gray-700 dark:text-gray-200">
                       {search
                         ? "Lagu tidak ditemukan"
                         : "Belum ada data lagu"}
                     </p>
 
-                    <p className="mt-1 text-xs text-gray-400">
+                    <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
                       {search
                         ? "Coba gunakan kata kunci pencarian yang lain."
                         : "Data lagu akan muncul setelah berhasil mengambil data dari Notion."}
@@ -771,13 +771,13 @@ export default function SongChordsPage() {
                       key={
                         song.id || index
                       }
-                      className="group grid grid-cols-[60px_1fr_280px] items-center border-b border-gray-100 px-6 py-4 transition last:border-b-0 hover:bg-blue-50/40"
+                      className="group grid grid-cols-[60px_1fr_280px] items-center border-b border-gray-100 px-6 py-4 transition last:border-b-0 hover:bg-blue-50/40 dark:border-neutral-800 dark:hover:bg-blue-900/10"
                     >
 
                       {/* NUMBER */}
 
                       <div>
-                        <span className="text-sm font-medium text-gray-400">
+                        <span className="text-sm font-medium text-gray-400 dark:text-neutral-500">
                           {String(
                             index + 1
                           ).padStart(
@@ -791,12 +791,12 @@ export default function SongChordsPage() {
 
                       <div className="min-w-0">
 
-                        <p className="truncate text-sm font-semibold text-gray-900 transition group-hover:text-blue-600">
+                        <p className="truncate text-sm font-semibold text-gray-900 transition group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
                           {song.judulLagu}
                         </p>
 
                         {song.linkChord && (
-                          <p className="mt-1 truncate text-xs text-gray-400">
+                          <p className="mt-1 truncate text-xs text-gray-400 dark:text-gray-500">
                             Chord tersedia
                           </p>
                         )}
@@ -816,7 +816,7 @@ export default function SongChordsPage() {
                             }
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:border-blue-300 hover:bg-blue-100 active:scale-[0.97]"
+                            className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:border-blue-300 hover:bg-blue-100 active:scale-[0.97] dark:border-blue-900/50 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:border-blue-800 dark:hover:bg-blue-900/40"
                           >
 
                             <svg
@@ -860,7 +860,7 @@ export default function SongChordsPage() {
 
                           </a>
                         ) : (
-                          <span className="rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-400">
+                          <span className="rounded-lg bg-gray-100 px-3 py-2 text-xs font-medium text-gray-400 dark:bg-neutral-800 dark:text-neutral-600">
                             Tidak tersedia
                           </span>
                         )}
@@ -874,7 +874,7 @@ export default function SongChordsPage() {
                               song
                             )
                           }
-                          className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 active:scale-[0.97]"
+                          className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 active:scale-[0.97] dark:border-neutral-700 dark:bg-neutral-800 dark:text-gray-300 dark:hover:border-neutral-600 dark:hover:bg-neutral-700"
                         >
 
                           <svg
@@ -907,7 +907,7 @@ export default function SongChordsPage() {
 
               <div className="mt-4 flex items-center justify-between">
 
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Menampilkan{" "}
                   {
                     filteredSongs.length
@@ -923,7 +923,7 @@ export default function SongChordsPage() {
                     fetchSongs
                   }
                   disabled={loading}
-                  className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 transition hover:bg-gray-50"
+                  className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs font-medium text-gray-700 transition hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-gray-300 dark:hover:bg-neutral-800"
                 >
                   ↻ Refresh
                 </button>
@@ -942,16 +942,16 @@ export default function SongChordsPage() {
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
 
-          <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-2xl">
+          <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-2xl dark:bg-neutral-900">
 
             <div className="mb-6 flex items-start justify-between">
 
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Tambah Lagu
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   Tambahkan judul lagu dan link chord.
                 </p>
               </div>
@@ -964,7 +964,7 @@ export default function SongChordsPage() {
                 disabled={
                   addLoading
                 }
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-800"
               >
 
                 <svg
@@ -989,7 +989,7 @@ export default function SongChordsPage() {
 
             <div className="mb-5">
 
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Nama Lagu
               </label>
 
@@ -1007,7 +1007,7 @@ export default function SongChordsPage() {
                 disabled={
                   addLoading
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:disabled:bg-neutral-950"
               />
 
             </div>
@@ -1016,7 +1016,7 @@ export default function SongChordsPage() {
 
             <div>
 
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Link Chord
               </label>
 
@@ -1034,10 +1034,10 @@ export default function SongChordsPage() {
                 disabled={
                   addLoading
                 }
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-gray-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:disabled:bg-neutral-950"
               />
 
-              <p className="mt-2 text-xs text-gray-400">
+              <p className="mt-2 text-xs text-gray-400 dark:text-gray-500">
                 Masukkan link halaman chord lagu.
               </p>
 
@@ -1046,9 +1046,9 @@ export default function SongChordsPage() {
             {/* ERROR */}
 
             {addError && (
-              <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+              <div className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900/50 dark:bg-red-900/10">
 
-                <p className="text-sm font-medium text-red-700">
+                <p className="text-sm font-medium text-red-700 dark:text-red-400">
                   {addError}
                 </p>
 
@@ -1067,7 +1067,7 @@ export default function SongChordsPage() {
                 disabled={
                   addLoading
                 }
-                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-gray-300 dark:hover:bg-neutral-800"
               >
                 Batal
               </button>
@@ -1080,12 +1080,12 @@ export default function SongChordsPage() {
                 disabled={
                   addLoading
                 }
-                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
               >
 
                 {addLoading ? (
                   <>
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white dark:border-gray-900/30 dark:border-t-gray-900" />
                     Menyimpan...
                   </>
                 ) : (
