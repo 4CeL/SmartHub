@@ -982,6 +982,13 @@ async function createWindow() {
     // Debugging:
     // mainWindow.webContents.openDevTools();
 
+    mainWindow.on("close", (event) => {
+      if (!isCleaningUp) {
+        event.preventDefault();
+        cleanupAndExit();
+      }
+    });
+
     mainWindow.on(
       "closed",
       () => {
@@ -1012,6 +1019,233 @@ async function createWindow() {
 }
 
 // ======================================================
+// STOP NEXT.JS STATIC SERVER
+// ======================================================
+
+function stopNextServer() {
+  return new Promise((resolve) => {
+    if (!nextProcess) {
+      resolve();
+      return;
+    }
+
+    console.log("");
+    console.log(
+      "================================="
+    );
+    console.log(
+      "Menghentikan Next.js server (localhost:3000)..."
+    );
+    console.log(
+      "================================="
+    );
+
+    try {
+      if (typeof nextProcess.closeAllConnections === "function") {
+        nextProcess.closeAllConnections();
+      }
+
+      nextProcess.close((error) => {
+        if (error) {
+          console.error(
+            "Gagal menghentikan Next.js static server:",
+            error
+          );
+        } else {
+          console.log(
+            "Next.js static server berhasil dihentikan."
+          );
+        }
+        nextProcess = null;
+        resolve();
+      });
+    } catch (error) {
+      console.error(
+        "Error saat menghentikan Next.js static server:",
+        error
+      );
+      nextProcess = null;
+      resolve();
+    }
+  });
+}
+
+// ======================================================
+// STOP N8N CONTAINER
+// ======================================================
+
+async function stopN8n() {
+  console.log("");
+  console.log(
+    "================================="
+  );
+  console.log(
+    "Menghentikan container n8n..."
+  );
+  console.log(
+    "================================="
+  );
+
+  try {
+    const running = await isN8nRunning();
+
+    if (!running) {
+      console.log(
+        "Container n8n sudah tidak berjalan."
+      );
+      return;
+    }
+
+    console.log(
+      `Menjalankan: docker stop -t 5 ${N8N_CONTAINER}...`
+    );
+
+    await runCommand("docker", [
+      "stop",
+      "-t",
+      "5",
+      N8N_CONTAINER,
+    ]);
+
+    console.log(
+      "Container n8n berhasil dihentikan."
+    );
+  } catch (error) {
+    console.error(
+      "Gagal menghentikan container n8n:",
+      error?.message || error
+    );
+  }
+}
+
+// ======================================================
+// STOP DOCKER DESKTOP
+// ======================================================
+
+async function stopDockerDesktop() {
+  console.log("");
+  console.log(
+    "================================="
+  );
+  console.log(
+    "Menghentikan Docker Desktop..."
+  );
+  console.log(
+    "================================="
+  );
+
+  try {
+    console.log(
+      "Menjalankan: docker desktop stop..."
+    );
+    await runCommand("docker", [
+      "desktop",
+      "stop",
+      "--timeout",
+      "10",
+    ]);
+    console.log(
+      "Docker Desktop berhasil dihentikan via CLI."
+    );
+  } catch (cliError) {
+    console.warn(
+      "Gagal atau timeout via 'docker desktop stop', mencoba penutupan paksa...",
+      cliError?.message || cliError
+    );
+  }
+
+  // Pastikan proses Docker Desktop benar-benar tertutup
+  const dockerProcesses = [
+    "Docker Desktop.exe",
+    "com.docker.backend.exe",
+    "com.docker.proxy.exe",
+  ];
+
+  for (const procName of dockerProcesses) {
+    try {
+      await runCommand("taskkill", [
+        "/F",
+        "/IM",
+        procName,
+        "/T",
+      ]);
+    } catch {
+      // Abaikan jika proses sudah tertutup atau tidak ditemukan
+    }
+  }
+
+  console.log(
+    "Docker Desktop selesai dihentikan."
+  );
+}
+
+// ======================================================
+// CLEANUP & EXIT
+// ======================================================
+
+let isCleaningUp = false;
+
+async function cleanupAndExit() {
+  if (isCleaningUp) {
+    return;
+  }
+  isCleaningUp = true;
+
+  console.log("");
+  console.log(
+    "================================="
+  );
+  console.log(
+    "SmartHub sedang ditutup..."
+  );
+  console.log(
+    "Membersihkan background services..."
+  );
+  console.log(
+    "================================="
+  );
+
+  // Sembunyikan window segera agar user melihat aplikasi langsung tertutup
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    try {
+      mainWindow.hide();
+    } catch {
+      // Abaikan jika window sudah tertutup
+    }
+  }
+
+  // Pasang batas waktu (safety timeout 15 detik) agar proses tidak hang jika Docker macet
+  const safetyTimeout = setTimeout(() => {
+    console.warn(
+      "Batas waktu cleanup tercapai (15 detik). Memaksa keluar..."
+    );
+    app.exit(0);
+  }, 15000);
+
+  try {
+    // 1. Matikan Next.js static server (localhost:3000)
+    await stopNextServer();
+
+    // 2. Matikan container n8n
+    await stopN8n();
+
+    // 3. Matikan Docker Desktop
+    await stopDockerDesktop();
+  } catch (error) {
+    console.error(
+      "Error selama proses cleanup:",
+      error
+    );
+  } finally {
+    clearTimeout(safetyTimeout);
+    console.log(
+      "Semua services berhasil dimatikan. Aplikasi keluar."
+    );
+    app.exit(0);
+  }
+}
+
+// ======================================================
 // APP READY
 // ======================================================
 
@@ -1032,61 +1266,36 @@ app.whenReady().then(() => {
 });
 
 // ======================================================
-// WINDOW ALL CLOSED
+// LIFECYCLE EVENTS
 // ======================================================
 
 app.on(
   "window-all-closed",
   () => {
-    stopNextServer();
-
-    if (
-      process.platform !==
-      "darwin"
-    ) {
-      app.quit();
+    if (!isCleaningUp) {
+      cleanupAndExit();
     }
   }
 );
 
-// ======================================================
-// BEFORE QUIT
-// ======================================================
-
 app.on(
   "before-quit",
-  () => {
-    stopNextServer();
+  (event) => {
+    if (!isCleaningUp) {
+      event.preventDefault();
+      cleanupAndExit();
+    }
   }
 );
 
-// ======================================================
-// STOP NEXT.JS STATIC SERVER
-// ======================================================
-
-function stopNextServer() {
-  if (!nextProcess) {
-    return;
+process.on("SIGINT", () => {
+  if (!isCleaningUp) {
+    cleanupAndExit();
   }
+});
 
-  console.log(
-    "Menghentikan Next.js static server..."
-  );
-
-  try {
-    nextProcess.close(
-      () => {
-        console.log(
-          "Next.js static server berhasil dihentikan."
-        );
-      }
-    );
-  } catch (error) {
-    console.error(
-      "Gagal menghentikan Next.js static server:",
-      error
-    );
+process.on("SIGTERM", () => {
+  if (!isCleaningUp) {
+    cleanupAndExit();
   }
-
-  nextProcess = null;
-}
+});
