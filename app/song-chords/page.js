@@ -544,86 +544,95 @@ export default function SongChordsPage() {
         {/* ==================================================
             HEADER
         ================================================== */}
+        <section className="relative mb-5 overflow-hidden rounded-2xl bg-gray-900 px-7 py-8 shadow-sm">
 
-        <div className="mb-8 flex items-center justify-between gap-4">
+          {/* Decorative background */}
 
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
-              <Music className="h-5 w-5 text-white dark:text-gray-900" />
-            </div>
-
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Song Chords
-              </h1>
-
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Daftar lagu dan link chord untuk kebutuhan pelayanan.
-              </p>
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  Find & Send Songs Chord
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                  Daftar lagu dan link chord untuk kebutuhan pelayanan.
+                </p>
+              </div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/10">
+                <Music className="h-8 w-8 text-blue-400" />
+              </div>
             </div>
           </div>
+        </section>
 
-          {/* BUTTONS */}
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 mb-5">
+          <div className="flex items-end gap-4">
 
-          <div className="flex items-center gap-3">
+            {/* SEARCH BAR - KIRI */}
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
 
-            {/* KIRIM KE EMAIL */}
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Cari judul lagu..."
+                className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-blue-500"
+              />
+            </div>
 
-            <button
-              type="button"
-              onClick={openEmailModal}
-              className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-            >
+            {/* BUTTONS - KANAN */}
+            <div className="flex items-center gap-3">
 
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              {/* KIRIM KE EMAIL */}
+              <button
+                type="button"
+                onClick={openEmailModal}
+                className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
               >
-                <rect
-                  width="20"
-                  height="16"
-                  x="2"
-                  y="4"
-                  rx="2"
-                />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
 
-              Kirim ke Email
+                Kirim Email
+              </button>
 
-            </button>
-
-            {/* TAMBAH LAGU */}
-
-            <button
-              type="button"
-              onClick={openAddModal}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-gray-800 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-700"
-            >
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              {/* TAMBAH LAGU */}
+              <button
+                type="button"
+                onClick={openAddModal}
+                className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-700"
               >
-                <path d="M12 5v14" />
-                <path d="M5 12h14" />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 5v14" />
+                  <path d="M5 12h14" />
+                </svg>
 
-              Tambah Lagu
+                Tambah Lagu
+              </button>
 
-            </button>
+            </div>
 
           </div>
 
@@ -634,26 +643,6 @@ export default function SongChordsPage() {
         ================================================== */}
 
         <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-
-          {/* SEARCH */}
-
-          <div className="mb-6">
-
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Cari Lagu
-            </label>
-
-            <input
-              type="text"
-              value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
-              placeholder="Cari judul lagu..."
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-blue-500"
-            />
-
-          </div>
 
           {/* ==================================================
               LOADING
@@ -932,6 +921,17 @@ export default function SongChordsPage() {
               </div>
             </>
           )}
+
+        </div>
+        {/* ==================================================
+            FOOTER
+        ================================================== */}
+
+        <div className="py-8 text-center">
+
+          <p className="text-xs text-gray-400">
+            SmartHub · Song Chords
+          </p>
 
         </div>
       </div>

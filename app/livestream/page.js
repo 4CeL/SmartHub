@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Video } from "lucide-react";
+import { Video, Sparkles } from "lucide-react";
 
 export default function Home() {
   const [thumbnailDesignId, setThumbnailDesignId] = useState("");
@@ -347,43 +347,71 @@ export default function Home() {
         {/* ==================================================
             HEADER
         ================================================== */}
-        
-        <section className="mb-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
-              <Video className="h-5 w-5 text-white dark:text-gray-900" />
-            </div>
+        <section className="relative mb-8 overflow-hidden rounded-2xl bg-gray-900 px-7 py-8 shadow-sm">
 
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Sunday Service Livestream Scheduler
-              </h1>
+          {/* Decorative background */}
 
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Atur Livestream YouTube dan Video News Gereja.
-              </p>
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  Sunday Service Livestream Scheduler
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                  Atur Livestream YouTube dan Video News Gereja.
+                </p>
+              </div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/10">
+                <Video className="h-8 w-8 text-blue-400" />
+              </div>
             </div>
           </div>
         </section>
+        
+        {/* ==================================================
+            Card 1 Untuk Thumbnail Id & Add Button
+        ================================================== */}
+        {/* Thumbnail Design */}
+        <div className="mb-5 rounded-xl bg-white p-6 shadow-sm dark:bg-neutral-900 transition-colors">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
+            Input Thumbnail Design ID
+            </h2>
+            <div className="flex items-center gap-2">
+              <input
+              type="text"
+              id="thumbnailDesign"
+              value={thumbnailDesignId}
+              onChange={(e) => setThumbnailDesignId(e.target.value)}
+              className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800"
+              placeholder="Contoh: DAGrB_09meI"
+              />
+              <button
+                type="button"
+                onClick={addLivestream}
+                className="ml-2 inline-flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg bg-blue-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 5v14" />
+                  <path d="M5 12h14" />
+                </svg>
+                Tambah Jadwal
+              </button>
+            </div>
+        </div>
 
         {/* Main Card */}
         <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-neutral-900 transition-colors">
-
-        {/* Thumbnail Design */}
-        <div className="mb-8 border-b border-gray-100 pb-8 dark:border-neutral-800">
-            <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
-            Canva Thumbnail Design ID
-            </h2>
-
-            <input
-            type="text"
-            id="thumbnailDesign"
-            value={thumbnailDesignId}
-            onChange={(e) => setThumbnailDesignId(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:bg-neutral-800"
-            placeholder="Contoh: DAGrB_09meI"
-            />
-        </div>
 
         {/* Livestreams List */}
         <div className="space-y-6">
@@ -391,13 +419,6 @@ export default function Home() {
             <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
                 Daftar Livestream
             </h2>
-            <button
-                type="button"
-                onClick={addLivestream}
-                className="flex items-center gap-2 rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-100 active:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
-            >
-                + Tambah Livestream
-            </button>
             </div>
 
             {/* List */}
@@ -559,39 +580,55 @@ export default function Home() {
 
         {/* Error */}
         {error && (
-            <div className="mt-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <div className="mt-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700 dark:border-red-900/50 dark:bg-red-900/10 dark:text-red-400">
             <strong>Error:</strong> {error}
             </div>
         )}
 
         {/* Success */}
         {message && !error && (
-            <div className="mt-6 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+            <div className="mt-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-medium text-green-700 dark:border-green-900/50 dark:bg-green-900/10 dark:text-green-400">
             <strong>Berhasil:</strong> {message}
             </div>
         )}
 
-        {/* Submit */}
-        <div className="mt-8 border-t border-gray-200 pt-6">
+        </div>
 
+        {/* ==================================================
+            GENERATE / JALANKAN WORKFLOW
+        ================================================== */}
+        <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm dark:bg-gray-100  transition-colors">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm font-semibold text-white dark:text-gray-900">
+                  Siap membuat jadwal livestream?
+                </h2>
+              </div>
+              <p className="mt-1 text-xs leading-5 text-gray-400 dark:text-gray-500">
+                Otomatisasi pembuatan jadwal livestream YouTube dan upload video news ke Google Drive.
+              </p>
+            </div>
             <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={loading}
-            className={`w-full rounded-lg px-5 py-3 font-semibold text-white transition ${
-                loading
-                ? "cursor-not-allowed bg-gray-400"
-                : "bg-green-600 hover:bg-green-700"
-            }`}
+              type="button"
+              onClick={handleSubmit}
+              disabled={loading}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
             >
-            {loading
-                ? "⏳ Menjalankan Workflow..."
-                : "▶ Jalankan Workflow"}
+              {loading ? (
+                <>
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-900 dark:border-neutral-600 dark:border-t-white" />
+                  Menjalankan Workflow...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4" />
+                  Jalankan Workflow
+                </>
+              )}
             </button>
-
-        </div>
-
-        </div>
+          </div>
+        </section>
 
         {/* Result */}
         {result.length > 0 && (
@@ -642,6 +679,18 @@ export default function Home() {
             </div>
         </div>
         )}
+
+        {/* ==================================================
+            FOOTER
+        ================================================== */}
+
+        <div className="py-8 text-center">
+
+          <p className="text-xs text-gray-400">
+            SmartHub · Livestream
+          </p>
+
+        </div>
 
         {/* Payload Preview */}
         {/* <div className="mt-8 rounded-xl bg-gray-900 p-6 shadow-sm">

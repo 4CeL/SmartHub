@@ -10,6 +10,7 @@ import {
   Sparkles,
   Clock3,
   Trash2,
+  NotebookPen
 } from "lucide-react";
 
 const N8N_REPORT_URL =
@@ -409,19 +410,143 @@ export default function InternshipReportPage() {
         {/* ==================================================
             HEADER
         ================================================== */}
-        <section className="mb-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
-              <FileText className="h-5 w-5 text-white dark:text-gray-900" />
+        <section className="relative mb-5 overflow-hidden rounded-2xl bg-gray-900 px-7 py-8 shadow-sm">
+
+          {/* Decorative background */}
+
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  Monthly Report Generator
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                  Generate laporan kegiatan magang secara otomatis.
+                </p>
+              </div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/10">
+                <NotebookPen className="h-8 w-8 text-blue-400" />
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Monthly Internship Report
-              </h1>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Buat laporan kegiatan magang bulanan
-                menggunakan bantuan AI.
-              </p>
+          </div>
+        </section>
+
+        {/* ==================================================
+            REPORT INFORMATION
+        ================================================== */}
+
+        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-colors mb-5">
+          <div className="mb-6">
+            <div className="flex items-center gap-2">
+              <CalendarDays className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Periode Laporan
+              </h2>
+            </div>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Pilih bulan dan tahun untuk laporan ini.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
+            {/* MONTH */}
+
+            <div className="relative">
+
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Bulan
+              </label>
+              <select
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+                className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 pr-10 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
+              >
+
+                <option value="">
+                  Pilih bulan
+                </option>
+
+                <option value="Januari">
+                  Januari
+                </option>
+
+                <option value="Februari">
+                  Februari
+                </option>
+
+                <option value="Maret">
+                  Maret
+                </option>
+
+                <option value="April">
+                  April
+                </option>
+
+                <option value="Mei">
+                  Mei
+                </option>
+
+                <option value="Juni">
+                  Juni
+                </option>
+
+                <option value="Juli">
+                  Juli
+                </option>
+
+                <option value="Agustus">
+                  Agustus
+                </option>
+
+                <option value="September">
+                  September
+                </option>
+
+                <option value="Oktober">
+                  Oktober
+                </option>
+
+                <option value="November">
+                  November
+                </option>
+
+                <option value="Desember">
+                  Desember
+                </option>
+
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-4 flex top-7 items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-gray-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* TAHUN */}
+            <div className="flex-1">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Tahun
+              </label>
+              <input
+                type="text"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                placeholder="Contoh: 2024"
+                maxLength={4}
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
+              />
             </div>
           </div>
         </section>
@@ -429,7 +554,7 @@ export default function InternshipReportPage() {
         {/* ==================================================
             TAB
         ================================================== */}
-        <div className="mb-6 flex gap-2 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="mb-5 flex gap-2 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
           <button
             type="button"
             onClick={() => setActiveTab("input")}
@@ -478,123 +603,6 @@ export default function InternshipReportPage() {
 
         {activeTab === "input" && (
           <>
-{/* ==================================================
-                REPORT INFORMATION
-            ================================================== */}
-
-            <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 transition-colors">
-              <div className="mb-6">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Periode Laporan
-                  </h2>
-                </div>
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  Pilih bulan dan tahun untuk laporan ini.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-
-                {/* MONTH */}
-
-                <div className="relative">
-
-                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Bulan
-                  </label>
-                  <select
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 pr-10 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
-                  >
-
-                    <option value="">
-                      Pilih bulan
-                    </option>
-
-                    <option value="Januari">
-                      Januari
-                    </option>
-
-                    <option value="Februari">
-                      Februari
-                    </option>
-
-                    <option value="Maret">
-                      Maret
-                    </option>
-
-                    <option value="April">
-                      April
-                    </option>
-
-                    <option value="Mei">
-                      Mei
-                    </option>
-
-                    <option value="Juni">
-                      Juni
-                    </option>
-
-                    <option value="Juli">
-                      Juli
-                    </option>
-
-                    <option value="Agustus">
-                      Agustus
-                    </option>
-
-                    <option value="September">
-                      September
-                    </option>
-
-                    <option value="Oktober">
-                      Oktober
-                    </option>
-
-                    <option value="November">
-                      November
-                    </option>
-
-                    <option value="Desember">
-                      Desember
-                    </option>
-
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-4 flex top-7 items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-gray-500"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* TAHUN */}
-                <div className="flex-1">
-                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Tahun
-                  </label>
-                  <input
-                    type="text"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    placeholder="Contoh: 2024"
-                    maxLength={4}
-                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
-                  />
-                </div>
-              </div>
-            </section>
 
             {/* ==================================================
                 WEEKLY ACTIVITIES
@@ -779,11 +787,10 @@ export default function InternshipReportPage() {
                 GENERATE
             ================================================== */}
 
-            <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm dark:bg-white transition-colors">
+            <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm dark:bg-gray-100 transition-colors">
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-blue-400 dark:text-blue-500" />
                     <h2 className="text-sm font-semibold text-white dark:text-gray-900">
                       Siap membuat laporan?
                     </h2>

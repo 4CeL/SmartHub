@@ -37,17 +37,6 @@ export const tools = [
     icon: NotebookPen,
     available: true,
   },
-
-  {
-    name: "PDF Tools",
-    description:
-      "Berbagai tools untuk membantu proses pengolahan dokumen PDF.",
-    href: "#",
-    category: "Utilities",
-    icon: Wrench,
-    available: false,
-  },
-
   {
     name: "Materi Remaja",
     description:
@@ -56,15 +45,5 @@ export const tools = [
     category: "Tools",
     icon: BookOpen,
     available: true,
-  },
-
-  {
-    name: "Automation",
-    description:
-      "Kumpulan workflow untuk membantu mengotomatisasi pekerjaan.",
-    href: "#",
-    category: "Automation",
-    icon: Zap,
-    available: false,
   },
 ];

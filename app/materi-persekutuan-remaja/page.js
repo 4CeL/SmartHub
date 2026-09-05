@@ -325,30 +325,27 @@ export default function MateriPersekutuanRemajaPage() {
             HEADER
         ================================================== */}
 
-        <section className="mb-8">
+        <section className="relative mb-8 overflow-hidden rounded-2xl bg-gray-900 px-7 py-8 shadow-sm">
 
-          <div className="flex items-center gap-3">
+          {/* Decorative background */}
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 dark:bg-white">
-
-              <BookOpen className="h-5 w-5 text-white dark:text-gray-900" />
-
+          <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                  Teens Teaching Material Generator
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
+                  Buat materi persekutuan remaja dari ayat Alkitab.
+                </p>
+              </div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/10">
+                <BookOpen className="h-8 w-8 text-blue-400" />
+              </div>
             </div>
-
-            <div>
-
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Materi Persekutuan Remaja
-              </h1>
-
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Buat materi persekutuan remaja dari ayat Alkitab menggunakan AI.
-              </p>
-
-            </div>
-
           </div>
-
         </section>
 
         {/* ==================================================
@@ -461,7 +458,7 @@ export default function MateriPersekutuanRemajaPage() {
 
             </section>
 
-            <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm dark:bg-white transition-colors">
+            <section className="mt-6 rounded-2xl bg-gray-900 p-6 shadow-sm dark:bg-gray-100 transition-colors">
 
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
@@ -469,7 +466,6 @@ export default function MateriPersekutuanRemajaPage() {
 
                   <div className="flex items-center gap-2">
 
-                    <Sparkles className="h-5 w-5 text-blue-400 dark:text-blue-500" />
 
                     <h2 className="text-sm font-semibold text-white dark:text-gray-900">
                       Siap membuat materi renungan?
@@ -510,6 +506,18 @@ export default function MateriPersekutuanRemajaPage() {
               </div>
 
             </section>
+
+            {/* ==================================================
+                FOOTER
+            ================================================== */}
+
+            <div className="py-8 text-center">
+
+              <p className="text-xs text-gray-400">
+                SmartHub · Materi Persekutuan Remaja
+              </p>
+
+            </div>
 
           </>
         )}
