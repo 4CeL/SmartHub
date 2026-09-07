@@ -5,6 +5,7 @@ import {
   Zap,
   NotebookPen,
   BookOpen,
+  Headset,
 } from "lucide-react";
 
 export const tools = [
@@ -17,7 +18,15 @@ export const tools = [
     icon: Video,
     available: true,
   },
-
+  {
+    name: "Multimedia Schedule Sender",
+    description:
+      "Mengirim jadwal petugas multimedia via email.",
+    href: "/multimedia-schedule-sender",
+    category: "Automation",
+    icon: Headset,
+    available: true,
+  },
   {
     name: "Song Chords",
     description:
@@ -38,7 +47,7 @@ export const tools = [
     available: true,
   },
   {
-    name: "Materi Remaja",
+    name: "Teens Teaching Material",
     description:
       "Generate materi persekutuan remaja berdasarkan referensi ayat Alkitab.",
     href: "/materi-persekutuan-remaja",
