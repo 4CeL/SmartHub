@@ -440,15 +440,6 @@ export default function Home() {
                 Atur judul, canva template video news, dan tanggal pelaksanaan livestream.
               </p>
             </div>
-
-            <button
-              type="button"
-              onClick={addLivestream}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-700"
-            >
-              <Plus className="h-4 w-4" />
-              Tambah Jadwal
-            </button>
           </div>
 
           {/* List of livestreams */}

@@ -115,7 +115,7 @@ export default function MultimediaScheduleSenderPage() {
   };
 
   // Preset jam latihan
-  const quickTimePresets = ["08.00", "09.00", "10.00", "16.00", "17.00", "18.00", "19.00"];
+  const quickTimePresets = ["08.00", "09.00", "09.30", "10.00", "10.30", "13.00", "14.00"];
 
   // ======================================================
   // SUBMIT / SEND SCHEDULE TO N8N
@@ -270,7 +270,7 @@ export default function MultimediaScheduleSenderPage() {
 
             {/* Description */}
             <p className="mt-2 text-sm leading-6 text-gray-500 dark:text-gray-400">
-              Jadwal petugas multimedia telah berhasil dikirimkan ke email melalui n8n.
+              Jadwal petugas multimedia telah berhasil dikirimkan ke email.
             </p>
 
             {/* Detail Summary */}
@@ -417,7 +417,7 @@ export default function MultimediaScheduleSenderPage() {
                       className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
                     />
                     <p className="mt-2 text-[11px] text-gray-400 dark:text-gray-500">
-                      Nilai yang akan dikirim ke n8n (serviceDate). Anda dapat menyesuaikannya.
+                      Tanggal yang dipilih.
                     </p>
                   </div>
                 </div>
@@ -468,7 +468,7 @@ export default function MultimediaScheduleSenderPage() {
                       className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
                     />
                     <p className="mt-2 text-[11px] text-gray-400 dark:text-gray-500">
-                      Nilai yang akan dikirim ke n8n (rehearsalDate). Menyertakan nama hari.
+                      Tanggal pelaksanaan latihan.
                     </p>
                   </div>
 
@@ -501,7 +501,7 @@ export default function MultimediaScheduleSenderPage() {
                       className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
                     />
                     <p className="mt-2 text-[11px] text-gray-400 dark:text-gray-500">
-                      Nilai jam yang dikirim ke n8n (rehearsalTime, contoh: 09.00).
+                      Waktu pelaksanaan latihan.
                     </p>
                   </div>
 
