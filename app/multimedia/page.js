@@ -136,7 +136,7 @@ export default function ScheduleListPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-8 transition-colors dark:bg-neutral-950">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         {/* ==================================================
             HEADER (Mengikuti Style Referensi)
         ================================================== */}

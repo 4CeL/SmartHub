@@ -349,7 +349,7 @@ export default function Home() {
         </div>
       )}
 
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         {/* ==================================================
             HEADER
         ================================================== */}
