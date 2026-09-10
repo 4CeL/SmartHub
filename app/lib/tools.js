@@ -18,11 +18,20 @@ export const tools = [
     icon: Video,
     available: true,
   },
+  // {
+  //   name: "Multimedia Schedule",
+  //   description:
+  //     "Jadwal petugas multimedia gereja.",
+  //   href: "/multimedia-schedule",
+  //   category: "Automation",
+  //   icon: Headset,
+  //   available: true,
+  // },
   {
-    name: "Multimedia Schedule Sender",
+    name: "Multimedia",
     description:
-      "Mengirim jadwal petugas multimedia via email.",
-    href: "/multimedia-schedule-sender",
+      "Jadwal petugas multimedia gereja.",
+    href: "/multimedia",
     category: "Automation",
     icon: Headset,
     available: true,

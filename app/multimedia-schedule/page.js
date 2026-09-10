@@ -324,10 +324,10 @@ export default function MultimediaScheduleSenderPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                  Multimedia Schedule Sender
+                  Multimedia Schedule
                 </h1>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400">
-                  Kirim jadwal ibadah dan gladi bersih kepada seluruh petugas multimedia via email.
+                  Jadwal petugas ibadah gereja.
                 </p>
               </div>
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/10">
