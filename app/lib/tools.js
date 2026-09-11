@@ -28,7 +28,7 @@ export const tools = [
   //   available: true,
   // },
   {
-    name: "Multimedia",
+    name: "Multimedia Schedule",
     description:
       "Jadwal petugas multimedia gereja.",
     href: "/multimedia",

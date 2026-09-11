@@ -95,7 +95,7 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-8 dark:bg-neutral-950 transition-colors">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-6xl">
 
         {/* ==================================================
             WELCOME HEADER

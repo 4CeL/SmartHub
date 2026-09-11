@@ -23,6 +23,12 @@ import Link from "next/link";
 const N8N_GET_JADWAL_URL =
   "http://localhost:5678/webhook/get-multimedia-schedule";
 
+// ======================================================
+// N8N WEBHOOK URL
+// ======================================================
+const N8N_WEBHOOK_URL =
+  "http://localhost:5678/webhook/multimedia-schedule-sender";
+
 // Helper untuk mengubah singkatan bulan menjadi nama lengkap Indonesia
 function formatFullDate(dateStr) {
   if (!dateStr) return "-";
@@ -60,6 +66,103 @@ export default function ScheduleListPage() {
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("ALL");
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [sentPayload, setSentPayload] = useState(null);
+
+  // ======================================================
+  // FORM STATE
+  // ======================================================
+  const [serviceDate, setServiceDate] = useState("");
+  const [serviceDateRaw, setServiceDateRaw] = useState("");
+
+  const [rehearsalDate, setRehearsalDate] = useState("");
+  const [rehearsalDateRaw, setRehearsalDateRaw] = useState("");
+
+  const [rehearsalTime, setRehearsalTime] = useState("");
+  const [rehearsalTimeRaw, setRehearsalTimeRaw] = useState("");
+
+  // ======================================================
+  // QUICK PRESETS
+  // ======================================================
+  const quickTimePresets = ["08.00", "08.30", "09.00", "09.30", "10.00"];
+
+  // ======================================================
+  // AUTO-FORMAT SERVICE DATE (13 September 2026)
+  // ======================================================
+  const handleServiceDateChange = (rawDate) => {
+    setServiceDateRaw(rawDate);
+    if (!rawDate) {
+      setServiceDate("");
+      return;
+    }
+
+    const [year, month, day] = rawDate.split("-");
+    const monthIndex = parseInt(month, 10) - 1;
+    const formatted = `${parseInt(day, 10)} ${INDONESIAN_MONTHS[monthIndex]} ${year}`;
+    setServiceDate(formatted);
+  };
+
+  // ======================================================
+  // AUTO-FORMAT REHEARSAL DATE (Sabtu, 12 September)
+  // ======================================================
+  const handleRehearsalDateChange = (rawDate) => {
+    setRehearsalDateRaw(rawDate);
+    if (!rawDate) {
+      setRehearsalDate("");
+      return;
+    }
+
+    const [year, month, day] = rawDate.split("-");
+    const d = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+    const dayName = INDONESIAN_DAYS[d.getDay()];
+    const monthIndex = parseInt(month, 10) - 1;
+    const formatted = `${dayName}, ${parseInt(day, 10)} ${INDONESIAN_MONTHS[monthIndex]}`;
+    setRehearsalDate(formatted);
+  };
+
+  // ======================================================
+  // AUTO-FORMAT REHEARSAL TIME (09.00)
+  // ======================================================
+  const handleRehearsalTimeChange = (rawTime) => {
+    setRehearsalTimeRaw(rawTime);
+    if (!rawTime) {
+      setRehearsalTime("");
+      return;
+    }
+
+    const formatted = rawTime.replace(":", ".");
+    setRehearsalTime(formatted);
+  };
+
+  // ======================================================
+  // HELPER NAMA BULAN & HARI
+  // ======================================================
+  const INDONESIAN_MONTHS = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+
+  const INDONESIAN_DAYS = [
+    "Minggu",
+    "Senin",
+    "Selasa",
+    "Rabu",
+    "Kamis",
+    "Jumat",
+    "Sabtu",
+  ];
 
   // ======================================================
   // FETCH JADWAL DARI N8N
@@ -109,6 +212,91 @@ export default function ScheduleListPage() {
   }, []);
 
   // ======================================================
+  // OPEN EMAIL MODAL
+  // ======================================================
+
+  const openEmailModal = () => {
+    setShowEmailModal(true);
+  };
+
+  // ======================================================
+  // Send Email
+  // ======================================================
+
+  const handleSubmit= async () => {
+    setError("");
+    setMessage("");
+    setSuccess(false);
+
+    // Validasi
+    if (!serviceDate.trim()) {
+      setError("Tanggal Ibadah (serviceDate) wajib diisi.");
+      return;
+    }
+
+    if (!rehearsalDate.trim()) {
+      setError("Tanggal Latihan (rehearsalDate) wajib diisi.");
+      return;
+    }
+
+    if (!rehearsalTime.trim()) {
+      setError("Jam Latihan (rehearsalTime) wajib diisi.");
+      return;
+    }
+
+    const payload = {
+      serviceDate: serviceDate.trim(),
+      rehearsalDate: rehearsalDate.trim(),
+      rehearsalTime: rehearsalTime.trim(),
+    };
+
+    console.log("Mengirim payload ke n8n:", payload);
+    setLoading(true);
+
+    try {
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `n8n mengembalikan status ${response.status}: ${response.statusText}`
+        );
+      }
+
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = { success: true, message: "Jadwal berhasil dikirim." };
+      }
+
+      console.log("Respon dari n8n:", data);
+
+      if (data.success === false) {
+        throw new Error(data.message || "Gagal mengirim jadwal multimedia.");
+      }
+
+      setSentPayload(payload);
+      setSuccess(true);
+      setMessage(data.message || "Jadwal petugas multimedia berhasil dikirim ke email!");
+    } catch (err) {
+      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Terjadi kesalahan saat menghubungi server n8n.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ======================================================
   // FILTERING DATA (Search & Month Filter)
   // ======================================================
   const filteredSchedules = useMemo(() => {
@@ -136,7 +324,7 @@ export default function ScheduleListPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-8 transition-colors dark:bg-neutral-950">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-6xl">
         {/* ==================================================
             HEADER (Mengikuti Style Referensi)
         ================================================== */}
@@ -220,13 +408,35 @@ export default function ScheduleListPage() {
                     </div>
                 </div>
 
-                <Link
+                {/* <Link
                     href="/multimedia-schedule"
                     className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 active:scale-[0.98] dark:bg-blue-600 dark:hover:bg-blue-700"
                     >
                     <Send className="h-4 w-4" />
                     Kirim Jadwal
-                </Link>
+                </Link> */}
+                {/* KIRIM KE EMAIL */}
+                <button
+                  type="button"
+                  onClick={openEmailModal}
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+
+                  Kirim Email
+                </button>
 
                 </div>
             </div>
@@ -256,14 +466,12 @@ export default function ScheduleListPage() {
             MAIN CONTENT: SCHEDULE LIST (CARDS)
         ================================================== */}
         {loading ? (
-          /* SKELETON LOADING STATE */
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-80 animate-pulse rounded-2xl border border-gray-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900"
-              />
-            ))}
+          /* LOADING SPINNER STATE */
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600 dark:border-neutral-700 dark:border-t-blue-500" />
+            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+              Memuat daftar jadwal...
+            </p>
           </div>
         ) : filteredSchedules.length === 0 ? (
           /* EMPTY STATE */
@@ -286,16 +494,16 @@ export default function ScheduleListPage() {
               >
                 <div>
                   {/* Card Header: Tanggal & Tema */}
-                  <div className="flex items-start justify-between border-b border-gray-100 pb-4 dark:border-neutral-800">
+                  <div className="flex items-start justify-between border-b border-gray-100 pb-3 dark:border-neutral-800">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                        <Calendar className="h-6 w-6" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                        <Calendar className="h-5 w-5" />
                       </div>
                       <div>
                         <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
                           Sunday
                         </span>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                        <h3 className="text-m font-bold text-gray-900 dark:text-white">
                           {formatFullDate(item.date)}
                         </h3>
                       </div>
@@ -304,10 +512,10 @@ export default function ScheduleListPage() {
 
                   {/* Tema Minggu */}
                   <div className="my-4 rounded-xl bg-gray-100 p-3 dark:bg-neutral-600/50">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                    <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">
                       Tema Minggu Ini
                     </span>
-                    <p className="mt-0.5 text-sm font-bold text-gray-700 dark:text-gray-300">
+                    <p className="ml-2 mt-0.5 text-sm font-semibold text-gray-700 dark:text-gray-300">
                       {item.generalSchedule.temaMingguan}
                     </p>
                   </div>
@@ -321,32 +529,32 @@ export default function ScheduleListPage() {
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="col-span-2 rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Kamera:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Kamera:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.multimedia.kamera}
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Switcher:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Switcher:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.multimedia.videoSwitcher}
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">LCD:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">LCD:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.multimedia.lcd}
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Youtube:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Youtube:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.multimedia.youtube}
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Soundman:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Soundman:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.multimedia.soundman}
                         </p>
                       </div>
@@ -363,16 +571,16 @@ export default function ScheduleListPage() {
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       {/* WL & Pengkhotbah */}
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Worship Leader:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Worship Leader:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.generalSchedule.wl}
                         </p>
                       </div>
 
                       {/* Singers */}
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Singer:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Singer:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {[
                             item.generalSchedule.singer1,
                             item.generalSchedule.singer2,
@@ -385,8 +593,8 @@ export default function ScheduleListPage() {
 
                       {/* Pemusik Details */}
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Keyboardist:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Keyboardist:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {[
                             item.generalSchedule.keyboardist1, 
                             item.generalSchedule.keyboardist2,
@@ -396,8 +604,8 @@ export default function ScheduleListPage() {
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Guitarist:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Guitarist:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {[
                             item.generalSchedule.guitarist1,
                             item.generalSchedule.guitarist2
@@ -407,28 +615,28 @@ export default function ScheduleListPage() {
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Bassist:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Bassist:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.generalSchedule.bassist}
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Drummer:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Drummer:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.generalSchedule.drummer}
                         </p>
                       </div>
 
                       {/* Doa Syafaat & Usher */}
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Doa Syafaat:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Doa Syafaat:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.generalSchedule.doaSyafaat}
                         </p>
                       </div>
                       <div className="rounded-lg bg-gray-100/70 p-2 dark:bg-neutral-700/50">
-                        <span className="text-gray-400">Usher:</span>
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                        <span className="ml-2 text-gray-400">Usher:</span>
+                        <p className="ml-2 text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.generalSchedule.usher1} & {item.generalSchedule.usher2}
                         </p>
                       </div>
@@ -448,6 +656,8 @@ export default function ScheduleListPage() {
           </div>
         )}
 
+        
+
         {/* ==================================================
             FOOTER
         ================================================== */}
@@ -457,6 +667,258 @@ export default function ScheduleListPage() {
           </p>
         </div>
       </div>
+      {/* ======================================================
+          EMAIL MODAL
+      ====================================================== */}
+
+      {showEmailModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+
+          <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
+
+            {/* HEADER */}
+
+            <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-100 px-6 py-5 dark:border-neutral-800">
+
+              <div>
+
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Kirim Jadwal ke Email
+                </h2>
+
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Pilih jadwal petugas yang ingin dikirim melalui email.
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6 space-y-5">
+              {/* ITEM 1: JADWAL IBADAH */}
+              <section className="relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-gray-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
+                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-4 dark:border-neutral-800 dark:bg-neutral-800/50">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-sm font-bold text-blue-700 dark:bg-blue-900/50 dark:text-blue-400">
+                      1
+                    </span>
+                    <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+                      Jadwal Ibadah
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    {/* Tanggal Ibadah Picker */}
+                    <div>
+                      <label className="text-xs ml-1 mb-2 block font-medium text-gray-700 dark:text-gray-300">
+                        Pilih Tanggal Ibadah
+                      </label>
+                      <input
+                        type="date"
+                        value={serviceDateRaw}
+                        onChange={(e) => handleServiceDateChange(e.target.value)}
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
+                      />
+                      <p className="ml-1 mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                        Pilih tanggal ibadah dari kalender untuk format otomatis.
+                      </p>
+                    </div>
+
+                    {/* Format Tanggal Ibadah Text */}
+                    <div>
+                      <label className="text-xs ml-1 mb-2 block font-medium text-gray-700 dark:text-gray-300">
+                        Tanggal Ibadah
+                      </label>
+                      <input
+                        type="text"
+                        value={serviceDate}
+                        onChange={(e) => setServiceDate(e.target.value)}
+                        placeholder="Contoh: 13 September 2026"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
+                      />
+                      <p className="ml-1 mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                        Tanggal yang dipilih.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* ITEM 2: JADWAL LATIHAN & GLADI */}
+              <section className="relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-gray-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
+                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-4 dark:border-neutral-800 dark:bg-neutral-800/50">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-sm font-bold text-blue-700 dark:bg-blue-900/50 dark:text-blue-400">
+                      2
+                    </span>
+                    <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+                      Jadwal Latihan
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    {/* Tanggal Latihan Picker */}
+                    <div>
+                      <label className="text-xs ml-1 mb-2 block font-medium text-gray-700 dark:text-gray-300">
+                        Pilih Tanggal Latihan
+                      </label>
+                      <input
+                        type="date"
+                        value={rehearsalDateRaw}
+                        onChange={(e) => handleRehearsalDateChange(e.target.value)}
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
+                      />
+                      <p className="ml-1 mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                        Pilih hari & tanggal latihan dari kalender.
+                      </p>
+                    </div>
+
+                    {/* Format Tanggal Latihan Text */}
+                    <div>
+                      <label className="text-xs ml-1 mb-2 block font-medium text-gray-700 dark:text-gray-300">
+                        Tanggal Latihan
+                      </label>
+                      <input
+                        type="text"
+                        value={rehearsalDate}
+                        onChange={(e) => setRehearsalDate(e.target.value)}
+                        placeholder="Contoh: Sabtu, 12 September"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
+                      />
+                      <p className="ml-1 mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                        Tanggal pelaksanaan latihan.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              {/* ITEM 3: JAM LATIHAN */}
+              <section className="relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-gray-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
+                <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-5 py-4 dark:border-neutral-800 dark:bg-neutral-800/50">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-sm font-bold text-blue-700 dark:bg-blue-900/50 dark:text-blue-400">
+                      3
+                    </span>
+                    <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+                      Jam Latihan
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                    {/* Jam Latihan Time Picker */}
+                    <div>
+                      <label className="text-xs ml-1 mb-2 block font-medium text-gray-700 dark:text-gray-300">
+                        Pilih Jam Latihan
+                      </label>
+                      <input
+                        type="time"
+                        value={rehearsalTimeRaw}
+                        onChange={(e) => handleRehearsalTimeChange(e.target.value)}
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:ring-blue-900"
+                      />
+                      <p className="ml-1 mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                        Pilih jam dari time picker.
+                      </p>
+                    </div>
+
+                    {/* Format Jam Latihan Text */}
+                    <div>
+                      <label className="text-xs ml-1 mb-2 block font-medium text-gray-700 dark:text-gray-300">
+                        Jam Latihan
+                      </label>
+                      <input
+                        type="text"
+                        value={rehearsalTime}
+                        onChange={(e) => setRehearsalTime(e.target.value)}
+                        placeholder="Contoh: 09.00"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-blue-900"
+                      />
+                      <p className="ml-1 mt-2 text-[11px] text-gray-400 dark:text-gray-500">
+                        Waktu pelaksanaan latihan.
+                      </p>
+                    </div>
+
+                    {/* Quick Presets */}
+                    <div className="md:col-span-2 pt-1 pl-1">
+                      <div className="flex flex-col items-start gap-1.5">
+                        <div className="text-[11px] text-gray-400 dark:text-gray-500 mr-1">
+                          Pilihan cepat:
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {quickTimePresets.map((time) => (
+                            <button
+                              key={time}
+                              type="button"
+                              onClick={() => {
+                                setRehearsalTime(time);
+                                setRehearsalTimeRaw(time.replace(".", ":"));
+                              }}
+                              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                                rehearsalTime === time
+                                  ? "bg-blue-600 text-white shadow-sm"
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-neutral-800 dark:text-gray-300 dark:hover:bg-neutral-700"
+                              }`}
+                            >
+                              {time}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            {/* FOOTER */}
+
+            <div className="flex flex-shrink-0 items-center justify-end gap-3 border-t border-gray-100 px-6 py-4 dark:border-neutral-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowEmailModal(
+                    false
+                  );
+                }}
+                disabled={
+                  loading
+                }
+                className="flex-1 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-gray-300 dark:hover:bg-neutral-700 dark:focus:ring-neutral-700 sm:flex-none"
+              >
+                Batal
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={loading}
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500 sm:flex-none"
+              >
+                {loading ? (
+                  <>
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                    Mengirim Jadwal...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" />
+                    Kirim Jadwal
+                  </>
+                )}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
     </main>
   );
 }
