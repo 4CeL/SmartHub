@@ -1,7 +1,7 @@
 import { Lexend } from "next/font/google";
 import "./globals.css";
-import Sidebar from "./components/Sidebar";
 import { ThemeProvider } from "./components/ThemeProvider";
+import ClientWrapper from "./components/ClientWrapper";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -22,11 +22,9 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className={lexend.variable}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Sidebar />
-
-          <main className="pl-64">
+          <ClientWrapper>
             {children}
-          </main>
+          </ClientWrapper>
         </ThemeProvider>
       </body>
     </html>

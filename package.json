@@ -28,6 +28,10 @@
       {
         "from": "out",
         "to": "app/out"
+      },
+      {
+        "from": "../smarthub-be/dist/smarthub-backend",
+        "to": "backend"
       }
     ],
     "win": {

@@ -14,6 +14,7 @@ const fs = require("fs");
 
 let mainWindow = null;
 let nextProcess = null;
+let backendProcess = null;
 
 const PORT = 3000;
 const NEXT_URL = `http://localhost:${PORT}`;
@@ -913,13 +914,19 @@ async function createWindow() {
     await ensureN8n();
 
     // --------------------------------------------------
-    // 3. START NEXT.JS STATIC SERVER
+    // 3. START BACKEND
+    // --------------------------------------------------
+
+    await startBackend();
+
+    // --------------------------------------------------
+    // 4. START NEXT.JS STATIC SERVER
     // --------------------------------------------------
 
     await startNextServer();
 
     // --------------------------------------------------
-    // 4. WAIT NEXT.JS
+    // 5. WAIT NEXT.JS
     // --------------------------------------------------
 
     await waitForNextServer();
@@ -1016,6 +1023,95 @@ async function createWindow() {
     // Jangan langsung quit supaya
     // console masih bisa dibaca.
   }
+}
+
+// ======================================================
+// START PYTHON BACKEND
+// ======================================================
+
+function getBackendPath() {
+  const developmentPath = path.join(__dirname, "..", "..", "smarthub-be", "dist", "smarthub-backend", "smarthub-backend.exe");
+  const packagedPath = path.join(process.resourcesPath, "backend", "smarthub-backend.exe");
+  
+  if (app.isPackaged && fs.existsSync(packagedPath)) {
+    return packagedPath;
+  }
+  
+  return developmentPath;
+}
+
+function startBackend() {
+  return new Promise((resolve) => {
+    const backendPath = getBackendPath();
+
+    console.log("");
+    console.log("=================================");
+    console.log("Starting Python Backend Server");
+    console.log("=================================");
+    console.log("Backend path:", backendPath);
+
+    if (!fs.existsSync(backendPath)) {
+      console.warn("Backend executable not found at:", backendPath);
+      console.warn("Please run build_backend.ps1 in smarthub-be directory.");
+      resolve();
+      return;
+    }
+
+    backendProcess = spawn(backendPath, [], {
+      detached: false,
+      windowsHide: true,
+      cwd: path.dirname(backendPath)
+    });
+
+    backendProcess.stdout.on("data", (data) => {
+      console.log(`[Backend]: ${data}`);
+    });
+
+    backendProcess.stderr.on("data", (data) => {
+      console.error(`[Backend Error]: ${data}`);
+    });
+
+    backendProcess.on("error", (error) => {
+      console.error("Failed to start Python backend:", error);
+      backendProcess = null;
+    });
+
+    // Give it a moment to start
+    setTimeout(() => resolve(), 2000);
+  });
+}
+
+// ======================================================
+// STOP PYTHON BACKEND
+// ======================================================
+
+function stopBackend() {
+  return new Promise((resolve) => {
+    if (!backendProcess) {
+      resolve();
+      return;
+    }
+
+    console.log("");
+    console.log("=================================");
+    console.log("Menghentikan Python Backend...");
+    console.log("=================================");
+
+    try {
+      runCommand("taskkill", ["/PID", backendProcess.pid, "/T", "/F"])
+        .then(() => {
+          backendProcess = null;
+          resolve();
+        })
+        .catch(() => {
+          backendProcess = null;
+          resolve();
+        });
+    } catch (err) {
+      backendProcess = null;
+      resolve();
+    }
+  });
 }
 
 // ======================================================
@@ -1223,6 +1319,9 @@ async function cleanupAndExit() {
   }, 15000);
 
   try {
+    // 0. Matikan Backend
+    await stopBackend();
+
     // 1. Matikan Next.js static server (localhost:3000)
     await stopNextServer();
 

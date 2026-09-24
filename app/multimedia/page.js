@@ -647,9 +647,9 @@ export default function ScheduleListPage() {
                 {/* Footer Badges */}
                 <div className="mt-5 pt-3 flex items-center justify-between text-[11px] text-gray-400 border-t border-gray-100 dark:border-neutral-800">
                   <span>GBI Rosypinna</span>
-                  <span className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400">
+                  <Link href={`/multimedia/detail?id=${idx}`} className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400 hover:underline">
                     Detail Jadwal <ChevronRight className="h-3 w-3" />
-                  </span>
+                  </Link>
                 </div>
               </article>
             ))}

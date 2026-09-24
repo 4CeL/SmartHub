@@ -12,9 +12,11 @@ import {
   Settings,
   ChevronRight,
   Sparkles,
+  LogOut,
 } from "lucide-react";
 
 import { tools } from "../lib/tools";
+import { logout } from "../lib/auth";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -210,10 +212,21 @@ export default function Sidebar() {
             className="h-[18px] w-[18px]"
             strokeWidth={2}
           />
-
           <span>Settings</span>
-
         </Link>
+
+        {/* LOGOUT */}
+
+        <button
+          onClick={logout}
+          className="mb-4 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10 dark:hover:text-red-300"
+        >
+          <LogOut
+            className="h-[18px] w-[18px]"
+            strokeWidth={2}
+          />
+          <span>Logout</span>
+        </button>
 
         {/* VERSION CARD */}
 
