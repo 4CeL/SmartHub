@@ -952,6 +952,8 @@ async function createWindow() {
         backgroundColor:
           "#f9fafb",
 
+        autoHideMenuBar: true,
+
         webPreferences: {
           contextIsolation: true,
           nodeIntegration: false,

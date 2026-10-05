@@ -614,7 +614,7 @@ export default function MateriPersekutuanRemajaPage() {
 
                 <button
                   type="button"
-                  onClick={resetMateri}
+                  onClick={resetReport}
                   className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-gray-300 dark:hover:bg-neutral-800"
                 >
 
